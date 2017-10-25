@@ -5,6 +5,7 @@ $db = require(__DIR__ . '/db.php');
 
 $config = [
     'id' => 'basic',
+    'language'=>'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
@@ -15,7 +16,7 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        /*'user' => [
+       /* 'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],*/
@@ -47,8 +48,14 @@ $config = [
             ],
         ],
         */
+        
     ],
     'params' => $params,
+    'modules' => [
+            'user' => [
+        'class' => 'dektrium\user\Module',
+            ],
+        ],
 ];
 
 if (YII_ENV_DEV) {

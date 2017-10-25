@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $name
- *
+ * @property integer $sorting
  * @property FoodCategory[] $foodCategories
  */
 class Category extends \yii\db\ActiveRecord

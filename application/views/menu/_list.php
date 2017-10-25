@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\ListView;
 
 $provider = new yii\data\ArrayDataProvider([
-    'allModels' => $model->getFoods()->all(),
+    'allModels' => $model->getFoods()->orderby(['name' => SORT_ASC])->all(),
     /*'sort' => [
         'attributes' => ['id', 'email'],
     ],

@@ -3,6 +3,13 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+$this->registerJs(
+    "$('.carousel').carousel({
+        interval: 4000 //changes the speed
+    })",
+    $this::POS_READY,
+    'site-index-carousel'
+);
 ?>
     <div class="row">
         <div class="box">
@@ -81,7 +88,5 @@ $this->title = 'My Yii Application';
         </div>
     </div>
 <script>
-    $('.carousel').carousel({
-        interval: 4000 //changes the speed
-    })
+  
 </script>

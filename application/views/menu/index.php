@@ -7,12 +7,12 @@ use yii\widgets\ListView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Menus';
+$this->title = 'Меню';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    
 
    
     <?php/* GridView::widget([

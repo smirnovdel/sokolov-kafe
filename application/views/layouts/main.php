@@ -20,8 +20,6 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <script type="text/javascript" src="http://cp81961.tmweb.ru/smirnov/kafe/moduls/js/jquery-3.0.0.min.js?k=87"></script>
-    <script type="text/javascript" src="http://cp81961.tmweb.ru/smirnov/kafe/moduls/templates/js/bootstrap.min.js"></script>
     <?php $this->head() ?>
 </head>
 <body>
