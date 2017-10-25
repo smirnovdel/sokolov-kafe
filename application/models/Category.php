@@ -30,6 +30,7 @@ class Category extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 45],
+            [['sorting'], 'integer'],
         ];
     }
 
@@ -41,6 +42,7 @@ class Category extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'sorting' => 'Sorting',
         ];
     }
 

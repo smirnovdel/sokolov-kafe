@@ -6,11 +6,11 @@ use yii\widgets\ListView;
 
 $provider = new yii\data\ArrayDataProvider([
     'allModels' => $model->getFoods()->all(),
-   /* 'sort' => [
-        'attributes' => ['id', 'username', 'email'],
+    /*'sort' => [
+        'attributes' => ['id', 'email'],
     ],
     'pagination' => [
-        'pageSize' => 10,
+        'pageSize' => 2,
     ],*/
 ]);
 ?>
@@ -20,14 +20,17 @@ $provider = new yii\data\ArrayDataProvider([
     <h3><?= Html::encode($model->name); ?></h3>
     <?php
  echo ListView::widget([
-    'dataProvider' => $provider,
+    'dataProvider' => $provider,     
     'options' => [
         'tag' => 'div',
         'class' => 'list-wrapper',
         'id' => 'list-wrapper',
-    ],
+        
+    ],     
     'layout' => "{pager}\n{items}\n{summary}",
     'itemView' => '_list-food',
+     
+    
 ]);
  ?>
   </div>

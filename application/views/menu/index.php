@@ -14,9 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Menu', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+   
     <?php/* GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -47,5 +45,6 @@ echo ListView::widget([
     ],
     'layout' => "{pager}\n{items}\n{summary}",
     'itemView' => '_list',
+    
 ]);?>
 </div>

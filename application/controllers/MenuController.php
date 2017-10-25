@@ -36,7 +36,7 @@ class MenuController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => \app\models\Category::find(),
+            'query' => \app\models\Category::find()->orderby(['sorting'=>SORT_ASC]),
         ]);
 
         return $this->render('index', [
