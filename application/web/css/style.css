@@ -1,0 +1,70 @@
+.top_line{
+    background-color: #fff;
+    height:25px;
+    width: 100%;
+    text-align: right;
+    padding-top:5px;
+}
+.top_line p{
+    font: 12px/12px sans-serif; 
+    margin: 0 25px;
+}
+.food {
+    background-color:white; 
+    width:90%;
+    padding-top: 4%;
+    padding-bottom: 4%;
+    margin-bottom: 10px;
+    -webkit-transition: all 0.3s ease;;
+    -moz-transition: all 0.3s ease;;
+    -o-transition: all 0.3s ease;;
+    transition: all 0.3s ease;}
+.fon{
+    background: rgba(255,255,255,0.9);
+}
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 5px 0px;
+}
+li {
+    list-style: none;
+    padding: 5px 0px;
+    margin: 0;
+}
+.food:hover {
+    border-bottom-right-radius: 150px 30px;
+
+    box-shadow: 0 1em 5px rgba(122,122,122,0.5)
+
+}
+.paginat{
+    font-size: 1.5em; 
+    margin: 10px;
+    padding: 10px;
+
+}
+.paginat a{
+
+    margin: 0 10px 0 10px;
+    padding: 2px;
+    color: black;
+}
+.paginat span {
+    color: #ff8a43;
+    margin: 0 10px 0 10px;   
+}
+
+.paginat a:hover{
+    color: #ff8a43;
+
+}
+a.disabled {
+    pointer-events: none; /* делаем ссылку некликабельной */
+    cursor: pointer;
+}
+.modal-body{
+    margin: 20px auto;
+    max-width:700px;
+    background-color: #fff;
+}

@@ -1,0 +1,31 @@
+!.gitkeep
+
+# IDE
+/.idea/
+/nbproject/
+
+# Docker layer
+/.env
+
+# WORKSPACE
+/workspace/home/yii2/*
+!/workspace/home/yii2/.gitkeep
+
+
+# PERCONA
+/percona/docker-entrypoint-initdb.d/*.sql
+/percona/var/lib/mysql/*
+!/percona/var/lib/mysql/.gitkeep
+/percona/my.cnf
+
+# POSTGRES
+/postgres/var/lib/postgresql/data/*
+!/postgres/var/lib/postgresql/data/.gitkeep
+
+# NGINX
+/nginx/etc/nginx/nginx.conf
+/nginx/etc/nginx/dhparam.pem
+/nginx/etc/nginx/conf.d/*.conf
+
+# PHP-FPM
+/php-fpm/php.ini

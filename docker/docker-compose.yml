@@ -1,0 +1,65 @@
+version: "3"
+
+services:
+  yii2dock_workspace:
+    build:
+      context: ./workspace
+      args:
+        - INSTALL_NODE=${WORKSPACE_INSTALL_NODE}
+    container_name: ${PROJECT}_yii2dock_workspace
+    volumes:
+      - ${DOCUMENT_ROOT}:/var/www
+      - ./workspace/home/yii2:/home/yii2
+    tty: true
+    links:
+      - yii2dock_nginx
+      - yii2dock_php_fpm
+      - yii2dock_percona
+    depends_on:
+      - yii2dock_nginx
+      - yii2dock_php_fpm
+      - yii2dock_percona
+
+  yii2dock_nginx:
+    build:
+      context: ./nginx
+    container_name: ${PROJECT}_yii2dock_nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ../application:/var/www
+
+  yii2dock_php_fpm:
+    build:
+      context: ./php-fpm
+    container_name: ${PROJECT}_yii2dock_php_fpm
+    volumes:
+      - ../application:/var/www
+
+  yii2dock_percona:
+    build:
+      context: ./percona
+    container_name: ${PROJECT}_yii2dock_percona
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=${MYSQL_ALLOW_EMPTY_PASWORD}
+      - MYSQL_DATABASE=${PERCONA_DATABASE}
+      - MYSQL_USER=${PERCONA_USER}
+      - MYSQL_PASSWORD=${PERCONA_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${PERCONA_ROOT_PASSWORD}
+    ports:
+      - "${PERCONA_PORT}:3306"
+    volumes:
+      - ./percona/var/lib/mysql:/var/lib/mysql
+      - ${PERCONA_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+
+  yii2dock_postgres:
+    build:
+      context: ./postgres
+    container_name: ${PROJECT}_yii2dock_postgres
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
