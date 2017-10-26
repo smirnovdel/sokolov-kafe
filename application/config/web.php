@@ -16,10 +16,7 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-       /* 'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],*/
+        
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -40,22 +37,38 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
+        
+        /*'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
-        ],
-        */
+        ],*/
+        
+        'cart' => [
+            'class' => 'yz\shoppingcart\ShoppingCart',
+            'cartId' => 'my_application_cart',
+        ]
+        
         
     ],
+    
     'params' => $params,
     'modules' => [
-            'user' => [
+    'rbac' => [
+        'class' => 'dektrium\rbac\RbacWebModule',
+        'layout'=>'/default'],
+        
+    'user' => [
         'class' => 'dektrium\user\Module',
-            ],
+        'enableUnconfirmedLogin' => TRUE,
+        'confirmWithin' => 21600,
+        'cost' => 12,
+        'admins' => ['admin'],
+        //'defaultController'=>'user',
+        'layout'=>'/default'
         ],
+    ],
 ];
 
 if (YII_ENV_DEV) {

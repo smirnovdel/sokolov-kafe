@@ -13,6 +13,7 @@ use yii\widgets\ListView;
     <p><?= Html::encode($model->name); ?></p>
     <p>Вес: <?= Html::encode($model->weight); ?></p>
     <p>Цена: <?= Html::encode($model->price); ?></p>
+    <a href="<?php echo Url::to(['menu/add-to-cart','id'=>$model->id]); ?>">добавить</a>
 </div>
 </div>
 

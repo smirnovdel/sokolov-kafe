@@ -7,9 +7,9 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
+use app\assets\UserAsset;
 
-AppAsset::register($this);
+UserAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -26,19 +26,15 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <div class="brand">La Bottega Siciliana</div>
-    <div class="address-bar">Autostrada A19 Palermo-Catania | Uscita Dittaino Outlet - 94011 Agira</div>
     <?php
     NavBar::begin([
-           'options' => [
-            //'class' => 'navbar-inverse navbar-fixed-top',
-            'class' => 'navbar navbar-default',
+        'brandLabel' => Yii::$app->name,
+        'brandUrl' => Yii::$app->homeUrl,
+        'options' => [
+            'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    
-
-    echo 
-        Nav::widget([
+    echo Nav::widget([
         'options' => ['class' => 'nav navbar-nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
@@ -58,17 +54,15 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-         <?= $content ?>
+        <?= $content ?>
     </div>
 </div>
 
-<footer >
+<footer class="footer">
     <div class="container">
-        <div class="row">
         <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
-        </div>
     </div>
 </footer>
 

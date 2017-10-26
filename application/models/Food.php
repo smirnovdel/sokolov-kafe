@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-
 /**
  * This is the model class for table "food".
  *
@@ -73,4 +72,25 @@ class Food extends \yii\db\ActiveRecord
     return $this->hasMany(Category::className(), ['id' => 'category_id'])
       ->viaTable(FoodCategory::tableName(), ['food_id' => 'id']);
 }
+
+
+
+    public function getQuantity(){
+         return 1;
+    }
+    public function setQuantity(){
+         return 1;
+    }
+    
+    public function getPrice()
+    {
+        return 0;
+    }
+    
+    public function getId()
+    {
+        return $this->id;
+    } 
+
 }
+

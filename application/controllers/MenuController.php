@@ -36,7 +36,7 @@ class MenuController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => \app\models\Category::find()->orderby(['sorting'=>SORT_ASC]),
+            'query' => Category::find()->orderby(['sorting'=>SORT_ASC]),
         ]);
 
         return $this->render('index', [
@@ -121,4 +121,18 @@ class MenuController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    public function actionAddToCart($id)
+    {
+        $cart = new \yz\shoppingcart\ShoppingCart();
+
+        $model = \app\models\Food::findOne($id);
+        if ($model) {
+            $cart->put($model, 1);
+            return $this->redirect(['index']);
+        }
+        throw new NotFoundHttpException();
+    }
+    
+    
 }
