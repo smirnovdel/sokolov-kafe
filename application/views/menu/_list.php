@@ -18,6 +18,7 @@ $provider = new yii\data\ArrayDataProvider([
 <div class="row text-center">
   <div class="box">
     <h3><?= Html::encode($model->name); ?></h3>
+    
     <?php
  echo ListView::widget([
     'dataProvider' => $provider,     

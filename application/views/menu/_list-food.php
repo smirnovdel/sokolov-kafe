@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ListView;
-
+use yii\widgets\ActiveForm;
 
 ?>
 
@@ -14,6 +14,8 @@ use yii\widgets\ListView;
     <p>Вес: <?= Html::encode($model->weight); ?></p>
     <p>Цена: <?= Html::encode($model->price); ?></p>
     <a href="<?php echo Url::to(['menu/add-to-cart','id'=>$model->id]); ?>">добавить</a>
+    <a href="<?php echo Url::to(['menu/clear-cart']); ?>">очистить</a>
+ 
 </div>
 </div>
 

@@ -2,7 +2,7 @@
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -28,6 +28,16 @@ AppAsset::register($this);
 <div class="wrap">
     <div class="brand">La Bottega Siciliana</div>
     <div class="address-bar">Autostrada A19 Palermo-Catania | Uscita Dittaino Outlet - 94011 Agira</div>
+   
+ <?php
+        /** @var ShoppingCart $sc */
+        foreach(Yii::$app->cart->positions as $position){
+          echo $this->render('/cart/_cart_item',['position'=>$position]);
+          //var_dump($position);
+        }
+?>
+       <a href="<?php echo Url::toRoute(['cart/view']);?>">'Количество товаров: '<?= Yii::$app->cart->getCount()?></a>
+
     <?php
     NavBar::begin([
            'options' => [
@@ -49,7 +59,9 @@ AppAsset::register($this);
                     'url' => ['/user/security/logout'],
                     'linkOptions' => ['data-method' => 'post']],
                 ['label' => 'Register', 'url' => ['/user/registration/register'], 'visible' => Yii::$app->user->isGuest]
-        ],
+            
+                
+                ],
     ]);
     NavBar::end();
     ?>

@@ -121,18 +121,30 @@ class MenuController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
     
     public function actionAddToCart($id)
-    {
-        $cart = new \yz\shoppingcart\ShoppingCart();
-
-        $model = \app\models\Food::findOne($id);
-        if ($model) {
-            $cart->put($model, 1);
-            return $this->redirect(['index']);
-        }
-        throw new NotFoundHttpException();
+{
+    $cart = Yii::$app->cart;
+    
+    $model = \app\models\Food::findOne($id);
+  //  Yii::$app->cart->update($cart,2);
+    if ($model) {
+        $cart->put($model, 1);
+        return $this->redirect(['index']);
+    }
+    throw new NotFoundHttpException();
+   
+    
     }
     
+    public function actionСlearCart()
+    {
+   // Yii::app()->shoppingCart->clear();
+
+          return $this->redirect(['index']);
+    
+          
+    }
     
 }
