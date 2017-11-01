@@ -8,6 +8,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\components\MiniCart;
 
 AppAsset::register($this);
 ?>
@@ -30,13 +31,17 @@ AppAsset::register($this);
     <div class="address-bar">Autostrada A19 Palermo-Catania | Uscita Dittaino Outlet - 94011 Agira</div>
    
  <?php
-        /** @var ShoppingCart $sc */
-        foreach(Yii::$app->cart->positions as $position){
-          echo $this->render('/cart/_cart_item',['position'=>$position]);
-          //var_dump($position);
-        }
+ //unset($_SESSION['curt']);
+ //unset($_SESSION['login_id']);
+ app\models\CartSession::getSession();
+ echo 'Сумма: ' . $_SESSION['curt']['sum'] . ' <br>' .'Кол-во: ' . $_SESSION['curt']['count'];
+ 
+ 
 ?>
-       <a href="<?php echo Url::toRoute(['cart/view']);?>">'Количество товаров: '<?= Yii::$app->cart->getCount()?></a>
+    
+    <?php if (Yii::$app->user->can('admin', ['post' => $model])) { 
+    echo Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']); 
+}  ?>   
 
     <?php
     NavBar::begin([
@@ -46,25 +51,29 @@ AppAsset::register($this);
         ],
     ]);
     
-
-    echo 
+    
+   
+    
+ echo 
         Nav::widget([
         'options' => ['class' => 'nav navbar-nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Menu', 'url' => ['/menu']],
+            
             Yii::$app->user->isGuest ?
                 ['label' => 'Sign in', 'url' => ['/user/security/login']] :
                 ['label' => 'Sign out (' . Yii::$app->user->identity->username . ')',
                     'url' => ['/user/security/logout'],
                     'linkOptions' => ['data-method' => 'post']],
-                ['label' => 'Register', 'url' => ['/user/registration/register'], 'visible' => Yii::$app->user->isGuest]
-            
+                ['label' => 'Register', 'url' => ['/user/registration/register'], 'visible' => Yii::$app->user->isGuest],
+            Yii::$app->user->isGuest ?'':['label' => 'Корзина', 'url' => ['/cart']]    
                 
                 ],
+            
     ]);
     NavBar::end();
-    ?>
+   echo MiniCart::widget(['message' => 'Good morning']); ?>
 
     <div class="container">
         <?= Breadcrumbs::widget([

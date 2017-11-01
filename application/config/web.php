@@ -8,6 +8,7 @@ $config = [
     'language'=>'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -38,12 +39,13 @@ $config = [
         ],
         'db' => $db,
         
-        /*'urlManager' => [
+        'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
-        ],*/
+        ],
+        
         
         'cart' => [
             'class' => 'yz\shoppingcart\ShoppingCart',
@@ -68,6 +70,11 @@ $config = [
         //'defaultController'=>'user',
         'layout'=>'/default'
         ],
+     'authManager' => [
+            'class' => 'dektrium\rbac\RbacWebModule',
+            'defaultRoles' => ['admin', 'waiter'],
+             ],
+        
     ],
 ];
 

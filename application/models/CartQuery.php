@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[Food]].
+ * This is the ActiveQuery class for [[Cart]].
  *
- * @see Food
+ * @see Cart
  */
-class FoodQuery extends \yii\db\ActiveQuery
+class CartQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class FoodQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Food[]|array
+     * @return Cart[]|array
      */
     public function all($db = null)
     {
@@ -25,14 +25,12 @@ class FoodQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Food|array|null
+     * @return Cart|array|null
      */
     public function one($db = null)
     {
         return parent::one($db);
     }
-     public function allcart()
-     {
-        return $this->andWhere(['54', '53', '55']);
-     }
+    
+   
 }

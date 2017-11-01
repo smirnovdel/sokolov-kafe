@@ -14,7 +14,7 @@ use Yii;
  *
  * @property FoodCategory[] $foodCategories
  */
-class Food extends \yii\db\ActiveRecord //implements \yz\shoppingcart\CartPositionInterface
+class Food extends \yii\db\ActiveRecord 
 {
     /**
      * @inheritdoc
@@ -75,22 +75,6 @@ class Food extends \yii\db\ActiveRecord //implements \yz\shoppingcart\CartPositi
 
 
 
-   public function getQuantity(){
-         return 1;
-    }
-    public function setQuantity(){
-         return 1;
-    }
-   
-    public function getPrice()
-    {
-        return 0;
-    }
-    
-    public function getId()
-    {
-        return $this->id;
-    }
 
 }
 
