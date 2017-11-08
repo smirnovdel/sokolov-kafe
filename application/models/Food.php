@@ -16,6 +16,11 @@ use Yii;
  */
 class Food extends \yii\db\ActiveRecord 
 {
+
+    
+   public $category;
+    
+    
     /**
      * @inheritdoc
      */
@@ -32,6 +37,7 @@ class Food extends \yii\db\ActiveRecord
         return [
             [['name', 'weight', 'price'], 'required'],
             [['weight'], 'integer'],
+            [['category'], 'integer'],
             [['price'], 'number'],
             [['name', 'picture'], 'string', 'max' => 255],
         ];
@@ -48,6 +54,7 @@ class Food extends \yii\db\ActiveRecord
             'weight' => 'Weight',
             'price' => 'Price',
             'picture' => 'Picture',
+            'category' => 'Picture',
         ];
     }
 

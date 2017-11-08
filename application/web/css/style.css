@@ -9,6 +9,17 @@
     font: 12px/12px sans-serif; 
     margin: 0 25px;
 }
+.panel-default1{
+    float: right;
+    background-color:none;
+	margin:0;
+height:100%;
+background:transparent;
+}
+.panel-default1 .box{
+margin:0;
+    padding: 18px 15px;
+background:transparent;}
 .food {
     background-color:white; 
     width:90%;

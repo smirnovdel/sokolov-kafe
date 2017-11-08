@@ -11,11 +11,6 @@ class CartSession
  
       public static function getSession()
     {        
-             
-             $_SESSION['login_id'] = Yii::$app->user->isGuest ? 'guest' : Yii::$app->user->id;
-             
-             if($_SESSION['login_id'] == Yii::$app->user->id){
-                 
                  $order = Cart::find()->where(['id_user'=> Yii::$app->user->id])->one();
                     if($order){
                         
@@ -32,16 +27,6 @@ class CartSession
                             'json' => '',
                         ];  
                     }
-                 
-             } else{
-               
-                 $_SESSION['curt'] = [
-                            'sum' => 0,
-                            'count' => 0,
-                            'json' => '',
-                        ];  
-             }
-             
     }    
     
     public static function addFoodSessionFromBd()

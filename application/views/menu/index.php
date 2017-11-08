@@ -1,9 +1,10 @@
 <?php
 
+use Yii;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ListView;
-
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -14,31 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <div class="menu-index">
-
-    
-
-   
-    <?php/* GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'food',
-            'weight',
-            'price',
-            'time_id',
-             //'picture',
-            // 'createdata',
-            // 'sostav',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); */?>
+<p>
+        <?= Html::a('Create Foodss', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>    
     
     <?php
-
- 
 echo ListView::widget([
     'dataProvider' => $dataProvider,
     'options' => [
@@ -46,8 +27,9 @@ echo ListView::widget([
         'class' => 'list-wrapper',
         'id' => 'list-wrapper',
     ],
-    'layout' => "{pager}\n{items}\n{summary}",
+    'layout' => "{items}\n{pager}",
     'itemView' => '_list',
     
 ]);?>
+    
 </div>

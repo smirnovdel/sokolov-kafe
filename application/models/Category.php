@@ -45,7 +45,8 @@ class Category extends \yii\db\ActiveRecord
             'sorting' => 'Sorting',
         ];
     }
-
+    
+    
     /**
      * @return \yii\db\ActiveQuery
      */

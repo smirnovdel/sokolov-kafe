@@ -3,17 +3,21 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Cart;
 use app\models\Category;
+use app\models\FoodCategory;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Food;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
  */
 class MenuController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -33,16 +37,25 @@ class MenuController extends Controller
      * Lists all Menu models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id = false)
     {
+        if($id){
+        $model = Food::findOne($id);
+        $cart = new Cart;
+        $cart->addFood($model,$del);
+        $foods = Cart::parser();
+        }
+        
         $dataProvider = new ActiveDataProvider([
             'query' => Category::find()->orderby(['sorting'=>SORT_ASC]),
-        ]);
+    'pagination' => false]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+             'model'     =>  $foods,   
         ]);
     }
+
 
     /**
      * Displays a single Menu model.
@@ -63,10 +76,14 @@ class MenuController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Menu();
+        $model = new Food();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $food_category = new FoodCategory();
+
+            $food_category->saveCategory($model);
+
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -74,6 +91,8 @@ class MenuController extends Controller
         }
     }
 
+
+    
     /**
      * Updates an existing Menu model.
      * If update is successful, the browser will be redirected to the 'view' page.

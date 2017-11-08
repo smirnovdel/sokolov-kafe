@@ -14,13 +14,10 @@ class MiniCart extends Widget
        
         parent::init();
         
-        if ($this->message === null) {
-            $this->message = 'Hello World';
-        }
     }
 
-    public function run()
+  public function run()
     {
-        return Html::encode($this->message);
+        return $this->render('mini');
     }
 }

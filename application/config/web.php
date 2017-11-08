@@ -13,6 +13,21 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'F88BbU_Om_mU247WdN4ut_eDRbrTOaXX',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
+        ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            //'enableStrictParsing' => true,
+            'showScriptName' => false,
+            'rules' => [
+                ['class'  => 'yii\rest\UrlRule',
+                 'controller' => ['v1/food'],
+                    'tokens' => ['{id}' => '<id:\\w+>'],
+
+                ],
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -39,18 +54,21 @@ $config = [
         ],
         'db' => $db,
         
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
+
         
         
         'cart' => [
             'class' => 'yz\shoppingcart\ShoppingCart',
             'cartId' => 'my_application_cart',
-        ]
+        ],
+        'i18n' => [
+            'translations' => [
+                'file-input*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => dirname(__FILE__).'/../vendor/2amigos/yii2-file-input-widget/src/messages/',
+                ],
+            ],
+        ],
         
         
     ],
@@ -60,7 +78,7 @@ $config = [
     'rbac' => [
         'class' => 'dektrium\rbac\RbacWebModule',
         'layout'=>'/default'],
-        
+
     'user' => [
         'class' => 'dektrium\user\Module',
         'enableUnconfirmedLogin' => TRUE,
@@ -74,7 +92,10 @@ $config = [
             'class' => 'dektrium\rbac\RbacWebModule',
             'defaultRoles' => ['admin', 'waiter'],
              ],
-        
+        'v1' => [
+            'class' => 'app\modules\v1\Module',
+        ],
+
     ],
 ];
 

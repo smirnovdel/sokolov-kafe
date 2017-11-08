@@ -9,9 +9,14 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\components\MiniCart;
+use yii\widgets\Pjax;
+
 
 AppAsset::register($this);
 ?>
+
+
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -33,26 +38,21 @@ AppAsset::register($this);
  <?php
  //unset($_SESSION['curt']);
  //unset($_SESSION['login_id']);
- app\models\CartSession::getSession();
- echo 'Сумма: ' . $_SESSION['curt']['sum'] . ' <br>' .'Кол-во: ' . $_SESSION['curt']['count'];
  
+
+ app\models\CartSession::getSession();
+
  
 ?>
-    
-    <?php if (Yii::$app->user->can('admin', ['post' => $model])) { 
-    echo Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']); 
-}  ?>   
+ 
 
     <?php
     NavBar::begin([
            'options' => [
             //'class' => 'navbar-inverse navbar-fixed-top',
-            'class' => 'navbar navbar-default',
+           'class' => 'navbar navbar-default',
         ],
     ]);
-    
-    
-   
     
  echo 
         Nav::widget([
@@ -72,8 +72,13 @@ AppAsset::register($this);
                 ],
             
     ]);
+ Pjax::begin(['enablePushState' => false,'id' => 'mini']);
+ echo MiniCart::widget();
+ Pjax::end(); 
+ 
+ 
     NavBar::end();
-   echo MiniCart::widget(['message' => 'Good morning']); ?>
+    ?>
 
     <div class="container">
         <?= Breadcrumbs::widget([

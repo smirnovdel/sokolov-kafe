@@ -39,6 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row text-center">
   <div class="box">
  <?php
+ Pjax::begin(['id' => 'cart','enablePushState' => false]); 
+ 
  foreach ($model as $key => $value) {?>
     <div class="col-lg-4 text-center">
         <div class="food">
@@ -47,15 +49,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>Вес: <?= $value['weight'] ?></p>
     <p>Цена: <?= $value['price'] ?></p>
     <p>Количество: <?= $value['count'] ?>
-     <?= Html::a('-', ['cart/add-to-cart','id'=>$value['id'],'link'=>'index','del'=>true], ['class' => 'count']) ?>
-      <?= Html::a('+', ['cart/add-to-cart','id'=>$value['id'],'link'=>'index'], ['class' => 'count']) ?>
+     <?= Html::a('-', ['cart/add-to-cart','id'=>$value['id'],'del'=>true], ['class' => 'count external-link']) ?>
+      <?= Html::a('+', ['cart/add-to-cart','id'=>$value['id']], ['class' => 'count external-link']) ?>
     </p>
-    <a href="<?php echo Url::to(['cart/add-to-cart','id'=>$value['id']]); ?>">добавить</a>
         </div>
     </div> 
 <?php }
     
-
+Pjax::end();
 ?>
 </div>
 </div>

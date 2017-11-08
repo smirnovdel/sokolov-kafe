@@ -16,6 +16,7 @@ use Yii;
  */
 class FoodCategory extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -48,7 +49,18 @@ class FoodCategory extends \yii\db\ActiveRecord
             'food_id' => 'Food ID',
         ];
     }
-
+    
+    public function saveCategory($model)
+    {
+        $this->category_id = $model->category;
+        $this->food_id = $model->id;
+        $this->save();
+        return true;
+    }
+    
+    
+    
+    
     /**
      * @return \yii\db\ActiveQuery
      */

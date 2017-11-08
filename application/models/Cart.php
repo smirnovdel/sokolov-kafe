@@ -59,8 +59,6 @@ class Cart extends \yii\db\ActiveRecord
         ];
     }
 
-    
-    
     /**
      * @inheritdoc
      * @return CartQuery the active query used by this AR class.
@@ -76,42 +74,10 @@ class Cart extends \yii\db\ActiveRecord
     *
     * 
     */
-        public function updateOrder($id,$jsonSt,$del)
-    {       
-          $obj = BaseJson::decode($jsonSt);
-          
-          is_array($obj) ?: $obj = array();
-          
-            if (array_key_exists($id, $obj)){
-                
-                if ($del){
-                    
-                    if($obj[$id]==1){
-                        
-                       unset($obj[$id]); 
-                       
-                    } else {
-                        
-                    $obj[$id]--;
-                    }
-                
-                } else {
-                    $obj[$id]++;
-                }
-            }
-            else {
-                $obj[$id] = 1;
-            };
-          
-          $jsonSt = BaseJson::encode($obj);   
-          
-        return $jsonSt;
-    }
-    
+ 
     
         public function parser()
     {      
-            
           $order = Cart::find()->where(['id_user'=> Yii::$app->user->id])->one();
           
           $count = json_decode($order->json_order, true)?json_decode($order->json_order, true):array();
@@ -131,43 +97,65 @@ class Cart extends \yii\db\ActiveRecord
         return $mas;
     }
     
+           public function updateOrder($model,$order = false,$del = false)
+    {     
+          if(!$order) {$order = $this;
+          $order->id_user = Yii::$app->user->id;
+          }
+            $obj = BaseJson::decode($order->json_order);
+            is_array($obj) ?: $obj = array();
 
+              if (array_key_exists($model->id, $obj)){
+
+                  if ($del){
+
+                      if($obj[$model->id]==1){
+
+                         unset($obj[$model->id]);
+                         $order->sum -= $model->price;
+                         $order->count -= 1;
+
+                      } else {
+                      $obj[$model->id]--;
+                      $order->sum -= $model->price;
+                      $order->count -= 1;
+                      }
+
+                  } else {
+
+                      $obj[$model->id] = $obj[$model->id] +1;
+                      $order->sum += $model->price;
+                         $order->count += 1;
+                  }
+              }
+              else if(!$del) {
+                  $obj[$model->id] = 1;
+                  $order->sum += $model->price;
+                  $order->count += 1;
+              };
+
+            $order->json_order = BaseJson::encode($obj);   
+            
+            
+          return $order;
+    }
     
-    public function addFoodDb($model,$del)
+               
+    
+    public function addFood($model,$del)
     {
+        
         $order = $this::find()->where(['id_user'=> Yii::$app->user->id])->one();
-        if($order){
+        
+        
            //обновление имеющейся записи в БД
-            $order->sum = ($del && $order->count>0) ? $order->sum-$model->price : $order->sum + $model->price ;
-            $order->count = $del ? ( $order->count>0 ? $order->count - 1: $order->count ): $order->count + 1 ;
-            $order->json_order = $this::updateOrder($model->id,$order->json_order,$del);
-            $order->save();
+            $order = $this::updateOrder($model,$order,$del);
             if(!$order->save()){
-                print_r($order->getErrors());}
-            
-        } else {
-            //запись в базу новой сессии
-            $this->sum = $model->price;
-            $this->count = '1';
-            $this->id_user = Yii::$app->user->id;
-            $this->json_order = Cart::updateOrder($model->id,$cartrow->json_order);
-            $this->save();
-                
-                if(!$this->save()){
-                print_r($this->getErrors());}
-        }
-        
+                print_r($order->getErrors());} else {
+                    if ($order->sum == 0){$order->delete(); }
+                    CartSession::addFoodSessionFromBd();
+                }
+      
         
     }
-    
-    
-    public  function addFood($model,$del){
-       
-                $this->addFoodDb($model,$del);
-                CartSession::addFoodSessionFromBd();
-           
-            
-    }
-
-    
 }

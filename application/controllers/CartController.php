@@ -36,18 +36,10 @@ class CartController extends Controller
      */
     public function actionIndex()
     {
-        //$id_order = Cart::find()->where(['id_user'=> Yii::$app->user->id])->one();
-        
-        
         $foods = Cart::parser();
-        //$foods = Customer::findAll([54, 53, 55]);
         return $this->render('index', [
             'model'     =>  $foods
         ]);
-        
-        
-        
-        
     }
 
 
@@ -74,6 +66,7 @@ class CartController extends Controller
         $model = new Cart();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -132,13 +125,24 @@ class CartController extends Controller
     }
     
   
-    public function actionAddToCart($id, $link, $del = false)
+    public function actionAddToCart($id, $link= false, $del = false)
     {
         $model = \app\models\Food::findOne($id);
         $cart = new Cart;
         $cart->addFood($model,$del);
         
-        return $this->redirect([$link]);
+        $foods = Cart::parser();
+        
+        if ($link){
+            return $this->render($link, [
+                'model'     =>  $foods
+            ]);
+        } else {
+            return $this->render('index', [
+                'model'     =>  $foods
+            ]);
+        }
+        
     }
     
         
