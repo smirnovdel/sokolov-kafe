@@ -72,10 +72,11 @@ AppAsset::register($this);
                 ],
             
     ]);
- Pjax::begin(['enablePushState' => false,'id' => 'mini']);
- echo MiniCart::widget();
- Pjax::end(); 
- 
+    if(Yii::$app->user->can('Заказ блюда')){
+            Pjax::begin(['enablePushState' => false,'id' => 'mini']);
+         echo MiniCart::widget();
+         Pjax::end();
+    }
  
     NavBar::end();
     ?>

@@ -11,6 +11,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Food;
+use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -22,15 +24,40 @@ class MenuController extends Controller
      * @inheritdoc
      */
     public function behaviors()
-    {
-        return [
-            'verbs' => [
+    {   $behaviors = parent::behaviors();
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+           'only' => ['create', 'update', 'delete', 'index'],
+           'rules' => [
+               [
+                   'actions' => ['create', 'update', 'delete', 'index'],
+                   'allow' => true,
+                   'roles' => ['admin'],
+               ],
+               [
+                   'actions' => ['index'],
+                   'allow' => true,
+                   'roles' => ['user'],
+               ],
+               [
+                   'actions' => ['index'],
+                   'allow' => true,
+                   'roles' => ['?'],
+               ],
+           ],
+           //'denyCallback' => function ($rule, $action) {
+           //    throw new ForbiddenHttpException('You are not allowed to access this page');
+          // }
+       ];
+       
+        
+            $behaviors['verbs'] = [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
-            ],
-        ];
+            ];
+        return $behaviors;
     }
 
     /**

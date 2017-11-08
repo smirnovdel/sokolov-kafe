@@ -86,7 +86,8 @@ $config = [
         'cost' => 12,
         'admins' => ['admin'],
         //'defaultController'=>'user',
-        'layout'=>'/default'
+        'layout'=>'/default',
+        //'identityClass' => 'app\models\User',
         ],
      'authManager' => [
             'class' => 'dektrium\rbac\RbacWebModule',

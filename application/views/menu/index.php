@@ -16,7 +16,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="menu-index">
 <p>
-        <?= Html::a('Create Foodss', ['create'], ['class' => 'btn btn-success']) ?>
+    <?php 
+    
+    if(Yii::$app->user->can('CreateFood')){
+       echo Html::a('Create Foodss', ['create'], ['class' => 'btn btn-success']);
+                
+    } ?>
     </p>    
     
     <?php
