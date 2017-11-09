@@ -3,17 +3,19 @@
 namespace app\models;
 use yii\db\ActiveRecord;
 use yii\helpers\BaseJson;
-
+use app\models\CartFood;
 use Yii;
 
 /**
  * This is the model class for table "cart".
  *
  * @property integer $id
- * @property integer $id_user
+ * @property integer $user_id
  * @property string $json_order
  * @property integer $count
  * @property integer $sum
+ *
+ * @property CartFood[] $cartFoods
  */
 
 class Cart extends \yii\db\ActiveRecord
@@ -41,8 +43,8 @@ class Cart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_user'], 'required'],
-            [['id_user'], 'integer'],
+            [['user_id'], 'required'],
+            [['user_id'], 'integer'],
             [['json_order'], 'string'],
         ];
     }
@@ -54,7 +56,7 @@ class Cart extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_user' => 'Id User',
+            'user_id' => 'User Id',
             'json_order' => 'Json Order',
         ];
     }
@@ -78,7 +80,7 @@ class Cart extends \yii\db\ActiveRecord
     
         public function parser()
     {      
-          $order = Cart::find()->where(['id_user'=> Yii::$app->user->id])->one();
+          $order = Cart::find()->where(['user_id'=> Yii::$app->user->id])->one();
           
           $count = json_decode($order->json_order, true)?json_decode($order->json_order, true):array();
           
@@ -100,7 +102,7 @@ class Cart extends \yii\db\ActiveRecord
            public function updateOrder($model,$order = false,$del = false)
     {     
           if(!$order) {$order = $this;
-          $order->id_user = Yii::$app->user->id;
+          $order->user_id = Yii::$app->user->id;
           }
             $obj = BaseJson::decode($order->json_order);
             is_array($obj) ?: $obj = array();
@@ -144,18 +146,44 @@ class Cart extends \yii\db\ActiveRecord
     
     public function addFood($model,$del)
     {
-        
-        $order = $this::find()->where(['id_user'=> Yii::$app->user->id])->one();
-        
-        
+
+        $order = $this::find()->where(['user_id'=> Yii::$app->user->id])->one();
+
+        if(!$order) {$order = $this;
+            $order->user_id = Yii::$app->user->id;
+        }
+
+        if(!$order->save()){
+            print_r($order->getErrors());} else {
+
+            $order_food = new CartFood();
+            $order_food->cart_id = $order->id;
+            $order_food->food_id = $model->id;
+            $order_food->count = $order_food->count + 1;
+
+        }
+
            //обновление имеющейся записи в БД
-            $order = $this::updateOrder($model,$order,$del);
-            if(!$order->save()){
-                print_r($order->getErrors());} else {
-                    if ($order->sum == 0){$order->delete(); }
-                    CartSession::addFoodSessionFromBd();
-                }
+            //$order = $this::updateOrder($model,$order,$del);
+           // if(!$order->save()){
+             //   print_r($order->getErrors());} else {
+               //     if ($order->sum == 0){$order->delete(); }
+                //    CartSession::addFoodSessionFromBd();
+                //}
       
         
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCartFoods()
+    {
+        return $this->hasMany(CartFood::className(), ['cart_id' => 'id']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

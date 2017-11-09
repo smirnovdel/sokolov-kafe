@@ -40,8 +40,24 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="box">
  <?php
  Pjax::begin(['id' => 'cart','enablePushState' => false]); 
- 
- foreach ($model as $key => $value) {?>
+
+ echo ListView::widget([
+
+     'dataProvider' => $dataProvider,
+
+     'options' => [
+         'tag' => 'div',
+         'class' => 'list-wrapper',
+         'id' => 'list-wrapper',
+
+     ],
+     'layout' => "{items}\n{pager}",
+     'itemView' => '_list',
+ ]);
+
+
+
+ /*foreach ($model as $key => $value) {?>
     <div class="col-lg-4 text-center">
         <div class="food">
          <div style="min-height: 200px; max-height:200px; overflow: hidden;"><img src="/<?= $value['picture'] ?>" width="93%"></div>
@@ -54,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
         </div>
     </div> 
-<?php }
+<?php }*/
     
 Pjax::end();
 ?>

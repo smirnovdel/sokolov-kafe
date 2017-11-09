@@ -4,7 +4,9 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Category;
+
 use app\models\Cart;
+use app\models\CartFood;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -36,10 +38,19 @@ class CartController extends Controller
      */
     public function actionIndex()
     {
-        $foods = Cart::parser();
+       // $foods = Cart::parser();
+       // return $this->render('index', [
+       //     'model'     =>  $foods
+       // ]);
+      $dataProvider = new ActiveDataProvider([
+            'query' => Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->with('food'),
+            'pagination' => false]);
+
         return $this->render('index', [
-            'model'     =>  $foods
+            'dataProvider' => $dataProvider,
         ]);
+
+     //var_dump(Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->all());
     }
 
 
@@ -128,10 +139,14 @@ class CartController extends Controller
     public function actionAddToCart($id, $link= false, $del = false)
     {
         $model = \app\models\Food::findOne($id);
+
+
+
         $cart = new Cart;
+
         $cart->addFood($model,$del);
         
-        $foods = Cart::parser();
+        //$foods = Cart::parser();
         
         if ($link){
             return $this->render($link, [

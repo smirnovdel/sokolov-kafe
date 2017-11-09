@@ -14,4 +14,10 @@ class User extends BaseUser
         }
         return null;
     }
+
+
+    public function getCart()
+    {
+        return $this->hasOne(Cart::className(), ['user_id' => 'id']);
+    }
 }

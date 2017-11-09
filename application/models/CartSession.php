@@ -11,7 +11,7 @@ class CartSession
  
       public static function getSession()
     {        
-                 $order = Cart::find()->where(['id_user'=> Yii::$app->user->id])->one();
+                 $order = Cart::find()->where(['user_id'=> Yii::$app->user->id])->one();
                     if($order){
                         
                         $_SESSION['curt'] = [
@@ -31,7 +31,7 @@ class CartSession
     
     public static function addFoodSessionFromBd()
     {
-        $order = Cart::find()->where(['id_user'=> Yii::$app->user->id])->one();
+        $order = Cart::find()->where(['user_id'=> Yii::$app->user->id])->one();
             $_SESSION['curt'] = [
                 'sum' =>$order->sum,
                 'count' =>$order->count,

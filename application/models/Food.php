@@ -12,7 +12,7 @@ use Yii;
  * @property string $price
  * @property string $picture
  *
- * @property FoodCategory[] $foodCategories
+
  */
 class Food extends \yii\db\ActiveRecord 
 {
