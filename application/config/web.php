@@ -23,7 +23,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 ['class'  => 'yii\rest\UrlRule',
-                 'controller' => ['v1/food'],
+                 'controller' => ['v1/food','v1/cart'],
                     'tokens' => ['{id}' => '<id:\\w+>'],
 
                 ],
@@ -87,7 +87,9 @@ $config = [
         'admins' => ['admin'],
         //'defaultController'=>'user',
         'layout'=>'/default',
-        //'identityClass' => 'app\models\User',
+        'modelMap' => [
+            'User' => 'app\models\User',
+        ],
         ],
      'authManager' => [
             'class' => 'dektrium\rbac\RbacWebModule',

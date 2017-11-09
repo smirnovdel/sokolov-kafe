@@ -64,7 +64,7 @@ class MenuController extends Controller
      * Lists all Menu models.
      * @return mixed
      */
-    public function actionIndex($id = false)
+    public function actionIndex($id = false,$del = false)
     {
         if($id){
         $model = Food::findOne($id);

@@ -1,57 +1,17 @@
 <?php
 namespace app\models;
-use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
 
-class User extends ActiveRecord implements IdentityInterface
+use dektrium\user\models\User as BaseUser;
+
+class User extends BaseUser
 {
-    public static function tableName()
-    {
-        return 'user';
-    }
-
-    /**
-     *
-     * @param string|int $id the ID to be looked for
-     * @return IdentityInterface|null the identity object that matches the given ID.
-     */
-    public static function findIdentity($id)
-    {
-        return static::findOne($id);
-    }
-
-    /**
-     *
-     * @param string $token the token to be looked for
-     * @return IdentityInterface|null the identity object that matches the given token.
-     */
+    /** @inheritdoc */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['access_token' => $token]);
-    }
-
-    /**
-     * @return int|string current user ID
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string current user auth key
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
-    }
-
-    /**
-     * @param string $authKey
-     * @return bool if auth key is valid for current user
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
+        $user = static::findOne(['access_token' => $token]);
+        if (!$user->isBlocked && $user->isConfirmed) {
+            return $user;
+        }
+        return null;
     }
 }

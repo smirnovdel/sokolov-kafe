@@ -1,31 +1,27 @@
 <?php
 namespace app\modules\v1\controllers;
-
-use yii\rest\ActiveController;
+use Yii;
+use app\models\Cart;
+use yii\rest\ActiveController as Controller;
 use yii\web\Response;
 use yii\filters\ContentNegotiator;
 use yii\filters\auth\QueryParamAuth;
 use yii\filters\AccessControl;
 
-class FoodController extends ActiveController
+class CartController extends Controller
 {
-    public $modelClass = 'app\models\Food';
+   public $modelClass = 'app\models\Cart';
 
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        /* $behaviors['authenticator'] = [
-           'class' => HttpBasicAuth::className(),
-            'auth' => function ($username,$password) {
-                $user = User::find()->where(['username' => $username])->one();
-                return $user;},
-        ];*/
-       $behaviors['contentNegotiator'] = [
-           'class' => ContentNegotiator::className(),
-           'formats' => [
-               'application/json' => Response::FORMAT_JSON,
-           ],
-       ];
+
+        $behaviors['contentNegotiator'] = [
+            'class' => ContentNegotiator::className(),
+            'formats' => [
+                'application/json' => Response::FORMAT_JSON,
+            ],
+        ];
         $behaviors['authenticator'] = [
             'class' => QueryParamAuth::className(),
         ];
@@ -48,6 +44,25 @@ class FoodController extends ActiveController
 
         return $behaviors;
     }
+
+   /* public function actionIndex()
+    {
+
+        return Cart::parser();
+    }
+
+    public function actionCreate()
+    {//получить данные из запроса
+        $model = new Cart();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return false;
+        }
+
+    }*/
 
 
 }
