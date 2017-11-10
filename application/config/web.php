@@ -85,8 +85,8 @@ $config = [
         'confirmWithin' => 21600,
         'cost' => 12,
         'admins' => ['admin'],
-        //'defaultController'=>'user',
         'layout'=>'/default',
+        'on '.\yii\web\User::EVENT_AFTER_LOGOUT => ['app\models\User', 'afterLogin'],
         'modelMap' => [
             'User' => 'app\models\User',
         ],

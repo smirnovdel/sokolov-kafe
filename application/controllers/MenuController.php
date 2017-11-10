@@ -67,10 +67,11 @@ class MenuController extends Controller
     public function actionIndex($id = false,$del = false)
     {
         if($id){
+
         $model = Food::findOne($id);
         $cart = new Cart;
         $cart->addFood($model,$del);
-        //$foods = Cart::parser();
+
         }
         
         $dataProvider = new ActiveDataProvider([
@@ -79,7 +80,6 @@ class MenuController extends Controller
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-             //'model'     =>  $foods,
         ]);
     }
 

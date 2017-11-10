@@ -40,7 +40,7 @@ AppAsset::register($this);
  //unset($_SESSION['login_id']);
  
 
- app\models\CartSession::getSession();
+ //app\models\CartSession::getSession();
 
  
 ?>
@@ -75,7 +75,7 @@ AppAsset::register($this);
     if(Yii::$app->user->can('Заказ блюда')){
             Pjax::begin(['enablePushState' => false,'id' => 'mini']);
          echo MiniCart::widget();
-         Pjax::end();
+        Pjax::end();
     }
  
     NavBar::end();

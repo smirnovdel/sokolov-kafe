@@ -55,23 +55,6 @@ $this->params['breadcrumbs'][] = $this->title;
      'itemView' => '_list',
  ]);
 
-
-
- /*foreach ($model as $key => $value) {?>
-    <div class="col-lg-4 text-center">
-        <div class="food">
-         <div style="min-height: 200px; max-height:200px; overflow: hidden;"><img src="/<?= $value['picture'] ?>" width="93%"></div>
-         <p><?= $value['name'] ?></p>
-    <p>Вес: <?= $value['weight'] ?></p>
-    <p>Цена: <?= $value['price'] ?></p>
-    <p>Количество: <?= $value['count'] ?>
-     <?= Html::a('-', ['cart/add-to-cart','id'=>$value['id'],'del'=>true], ['class' => 'count external-link']) ?>
-      <?= Html::a('+', ['cart/add-to-cart','id'=>$value['id']], ['class' => 'count external-link']) ?>
-    </p>
-        </div>
-    </div> 
-<?php }*/
-    
 Pjax::end();
 ?>
 </div>

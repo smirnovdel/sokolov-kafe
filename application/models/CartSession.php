@@ -10,34 +10,30 @@ class CartSession
 {
  
       public static function getSession()
-    {        
-                 $order = Cart::find()->where(['user_id'=> Yii::$app->user->id])->one();
-                    if($order){
-                        
-                        $_SESSION['curt'] = [
-                            'sum' => $order->sum,
-                            'count' => $order->count,
-                            'json' => $order->json_order,
-                        ]; 
-                    } else {
-                        
-                       $_SESSION['curt'] = [
-                            'sum' => 0,
-                            'count' => 0,
-                            'json' => '',
-                        ];  
-                    }
+    {
+        $order = Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->with('food');
+
+
+        if($order->one()){
+
+            foreach ($order->all() as $k=>$v){
+                $sum = $v['count'] * $v['food']['price'];
+                $total += $sum;
+                $count += $v['count'];
+            }
+
+
+                            $_SESSION['curt'] = [
+                                'sum' => $total,
+                                'count' => $count,
+                            ];
+        } else {
+
+            $_SESSION['curt'] = [
+            'sum' => 0,
+            'count' => 0,
+            ];
+        }
     }    
     
-    public static function addFoodSessionFromBd()
-    {
-        $order = Cart::find()->where(['user_id'=> Yii::$app->user->id])->one();
-            $_SESSION['curt'] = [
-                'sum' =>$order->sum,
-                'count' =>$order->count,
-                'json' =>$order->json_order,
-                ];
-    }
-    
-    
-} 
+}

@@ -20,8 +20,6 @@ use yii\widgets\Pjax;
       <?= Html::a('+', ['index','id'=>$model->id,], ['class' => 'count external-link']) ?>
      
     <br />
-    <a href="<?php echo Url::to(['cart/add-to-cart','id'=>$model->id,'link'=>'menu/index']); ?>">добавить</a>
-    <a href="<?php echo Url::to(['cart/cleart']); ?>">очистить</a>
     <?//= Html::a("Обновить", ['cart/clear'], ['class' => 'btn btn-lg btn-primary']) ?>
  
 </div>

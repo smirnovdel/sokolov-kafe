@@ -7,7 +7,6 @@ use Yii;
 /**
  * This is the model class for table "cart_food".
  *
- * @property integer $id
  * @property integer $cart_id
  * @property integer $food_id
  * @property integer $count
@@ -31,8 +30,7 @@ class CartFood extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'id_cart', 'id_food', 'count'], 'integer'],
+            [['cart_id', 'food_id', 'count'], 'integer'],
             [['food_id'], 'exist', 'skipOnError' => true, 'targetClass' => Food::className(), 'targetAttribute' => ['food_id' => 'id']],
             [['cart_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cart::className(), 'targetAttribute' => ['cart_id' => 'id']],
         ];
@@ -44,11 +42,21 @@ class CartFood extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'cart_id' => 'Cart Id',
             'food_id' => 'Food Id',
             'count' => 'Count',
         ];
+    }
+
+
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        CartSession::getSession();
+
+
     }
 
     /**
@@ -64,7 +72,10 @@ class CartFood extends \yii\db\ActiveRecord
      */
     public function getCart()
     {
+
         return $this->hasOne(Cart::className(), ['id' => 'cart_id']);
+
+
     }
 
     /**

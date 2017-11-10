@@ -4,6 +4,7 @@ namespace app\models;
 use yii\db\ActiveRecord;
 use yii\helpers\BaseJson;
 use app\models\CartFood;
+use app\models\CartSession;
 use Yii;
 
 /**
@@ -11,24 +12,12 @@ use Yii;
  *
  * @property integer $id
  * @property integer $user_id
- * @property string $json_order
- * @property integer $count
- * @property integer $sum
  *
  * @property CartFood[] $cartFoods
  */
 
 class Cart extends \yii\db\ActiveRecord
 {
-    /** @var CartSession */
-   //public $inmemoryStorage;
-    
-    /*public function afterSave($insert,$changedAttributes) {
-       parent::afterSave($insert, $changedAttributes);
-     
-       $this->inmemoryStorage->save();
-        
-    }*/
     /**
      * @inheritdoc
      */
@@ -45,7 +34,6 @@ class Cart extends \yii\db\ActiveRecord
         return [
             [['user_id'], 'required'],
             [['user_id'], 'integer'],
-            [['json_order'], 'string'],
         ];
     }
 
@@ -55,7 +43,7 @@ class Cart extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+
             'user_id' => 'User Id',
             'json_order' => 'Json Order',
         ];
@@ -69,109 +57,69 @@ class Cart extends \yii\db\ActiveRecord
     {
         return new CartQuery(get_called_class());
     }
-    
-    /**
-    * Принимает id блюда и json строку.
-    * Разбирает строку, добавляет блюдо, возвращает json строку
-    *
-    * 
-    */
- 
-    
-        public function parser()
-    {      
-          $order = Cart::find()->where(['user_id'=> Yii::$app->user->id])->one();
-          
-          $count = json_decode($order->json_order, true)?json_decode($order->json_order, true):array();
-          
-          foreach ($count as $key => $value) {
-              
-              $masid[] = $key;
-          }
-          
-          $mas = \app\models\Food::find()->where(['id' => $masid])->asArray()->all(); 
-          
-          foreach ($mas as $key => $value) {
-              
-              $mas[$key]['count'] = $count[$value['id']];
-          }
-          
-        return $mas;
+
+
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+
+
     }
-    
-           public function updateOrder($model,$order = false,$del = false)
-    {     
-          if(!$order) {$order = $this;
-          $order->user_id = Yii::$app->user->id;
-          }
-            $obj = BaseJson::decode($order->json_order);
-            is_array($obj) ?: $obj = array();
 
-              if (array_key_exists($model->id, $obj)){
-
-                  if ($del){
-
-                      if($obj[$model->id]==1){
-
-                         unset($obj[$model->id]);
-                         $order->sum -= $model->price;
-                         $order->count -= 1;
-
-                      } else {
-                      $obj[$model->id]--;
-                      $order->sum -= $model->price;
-                      $order->count -= 1;
-                      }
-
-                  } else {
-
-                      $obj[$model->id] = $obj[$model->id] +1;
-                      $order->sum += $model->price;
-                         $order->count += 1;
-                  }
-              }
-              else if(!$del) {
-                  $obj[$model->id] = 1;
-                  $order->sum += $model->price;
-                  $order->count += 1;
-              };
-
-            $order->json_order = BaseJson::encode($obj);   
-            
-            
-          return $order;
-    }
-    
-               
-    
     public function addFood($model,$del)
     {
+        $cart = $this::find()->where(['user_id'=> Yii::$app->user->id])->one();
 
-        $order = $this::find()->where(['user_id'=> Yii::$app->user->id])->one();
 
-        if(!$order) {$order = $this;
-            $order->user_id = Yii::$app->user->id;
-        }
 
-        if(!$order->save()){
-            print_r($order->getErrors());} else {
+        if(!$cart){$cart = new Cart;}
 
-            $order_food = new CartFood();
-            $order_food->cart_id = $order->id;
-            $order_food->food_id = $model->id;
-            $order_food->count = $order_food->count + 1;
+            $cart->user_id = Yii::$app->user->id;
 
-        }
+            if($cart->save()){
 
-           //обновление имеющейся записи в БД
-            //$order = $this::updateOrder($model,$order,$del);
-           // if(!$order->save()){
-             //   print_r($order->getErrors());} else {
-               //     if ($order->sum == 0){$order->delete(); }
-                //    CartSession::addFoodSessionFromBd();
-                //}
-      
-        
+                $cart_food = CartFood::find()->where(['cart_id'=>$cart->id,'food_id'=>$model->id])->one();
+
+                if(!$del){
+
+                    if(!$cart_food){
+
+                        $cart_food = new \app\models\CartFood;
+                        $cart_food->count = 1;
+
+                    } else {
+
+                        $cart_food->count = $cart_food->count + 1;
+                    }
+
+                    $cart_food->cart_id = $cart->id;
+                    $cart_food->food_id = $model->id;
+
+                    if($cart_food->save()){
+
+                    } else{
+                       print_r($cart_food->getErrors());};
+
+                } else {
+
+                    if($cart_food){
+
+                        if($cart_food->count == 1){
+                            $cart_food->delete();
+                        } else {
+                            $cart_food->count = $cart_food->count -1;
+                            $cart_food->save();
+                        }
+
+                    }
+
+                }
+
+
+            }
+
     }
 
     /**
@@ -179,11 +127,17 @@ class Cart extends \yii\db\ActiveRecord
      */
     public function getCartFoods()
     {
+
+
+
         return $this->hasMany(CartFood::className(), ['cart_id' => 'id']);
+
+
     }
 
     public function getUser()
     {
+
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

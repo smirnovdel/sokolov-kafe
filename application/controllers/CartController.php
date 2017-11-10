@@ -38,10 +38,7 @@ class CartController extends Controller
      */
     public function actionIndex()
     {
-       // $foods = Cart::parser();
-       // return $this->render('index', [
-       //     'model'     =>  $foods
-       // ]);
+
       $dataProvider = new ActiveDataProvider([
             'query' => Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->with('food'),
             'pagination' => false]);
@@ -67,25 +64,6 @@ class CartController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Cart model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Cart();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-               
-    }
 
     /**
      * Updates an existing Cart model.
@@ -136,38 +114,29 @@ class CartController extends Controller
     }
     
   
-    public function actionAddToCart($id, $link= false, $del = false)
+    public function actionAddToCart($id, $del = false)
     {
         $model = \app\models\Food::findOne($id);
-
-
 
         $cart = new Cart;
 
         $cart->addFood($model,$del);
-        
-        //$foods = Cart::parser();
-        
-        if ($link){
-            return $this->render($link, [
-                'model'     =>  $foods
-            ]);
-        } else {
-            return $this->render('index', [
-                'model'     =>  $foods
-            ]);
-        }
-        
+        $dataProvider = new ActiveDataProvider([
+            'query' => Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->with('food'),
+            'pagination' => false]);
+
+
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
     
         
     
     public function actionСleart()
     {
-   // Yii::app()->shoppingCart->clear();
-            
-       // $session->remove('curt');
-        
+
         return $this->redirect(['menu/index']);
           
     }

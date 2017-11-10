@@ -20,4 +20,11 @@ class User extends BaseUser
     {
         return $this->hasOne(Cart::className(), ['user_id' => 'id']);
     }
+
+    public function afterLogin()
+    {
+
+        CartSession::getSession();
+
+    }
 }
