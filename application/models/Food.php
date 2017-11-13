@@ -19,8 +19,8 @@ class Food extends \yii\db\ActiveRecord
 
     
    public $category;
-    
-    
+
+
     /**
      * @inheritdoc
      */

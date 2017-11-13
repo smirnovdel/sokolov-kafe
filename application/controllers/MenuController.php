@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Food;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -32,17 +33,12 @@ class MenuController extends Controller
                [
                    'actions' => ['create', 'update', 'delete', 'index'],
                    'allow' => true,
-                   'roles' => ['admin'],
+                   'roles' => ['Super-admin'],
                ],
                [
                    'actions' => ['index'],
                    'allow' => true,
-                   'roles' => ['user'],
-               ],
-               [
-                   'actions' => ['index'],
-                   'allow' => true,
-                   'roles' => ['?'],
+                   'roles' => ['@','?'],
                ],
            ],
            //'denyCallback' => function ($rule, $action) {
@@ -66,6 +62,7 @@ class MenuController extends Controller
      */
     public function actionIndex($id = false,$del = false)
     {
+
         if($id){
 
         $model = Food::findOne($id);
@@ -105,12 +102,28 @@ class MenuController extends Controller
     {
         $model = new Food();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $food_category = new FoodCategory();
+        if ($model->load(Yii::$app->request->post()) ) {
 
-            $food_category->saveCategory($model);
+            $image = UploadedFile::getInstance($model, 'picture');
 
-            return $this->redirect(['index']);
+            if($image->getHasError()){
+                return $image->error;
+               //TODO сообщение об ошибке
+            }
+
+            $model->picture =  'img/' . $image->name;
+
+            if($model->save()){
+
+                $food_category = new FoodCategory();
+
+                $image->saveAs($model->picture);
+
+                $food_category->saveCategory($model);
+
+                return $this->redirect(['index']);
+            };
+
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -119,7 +132,6 @@ class MenuController extends Controller
     }
 
 
-    
     /**
      * Updates an existing Menu model.
      * If update is successful, the browser will be redirected to the 'view' page.

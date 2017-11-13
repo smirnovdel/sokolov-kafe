@@ -72,7 +72,7 @@ AppAsset::register($this);
                 ],
             
     ]);
-    if(Yii::$app->user->can('Заказ блюда')){
+    if(Yii::$app->user->can('update-cart')){
             Pjax::begin(['enablePushState' => false,'id' => 'mini']);
          echo MiniCart::widget();
         Pjax::end();

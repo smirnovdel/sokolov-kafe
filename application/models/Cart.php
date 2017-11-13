@@ -64,15 +64,13 @@ class Cart extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-
+        CartSession::getSession();
 
     }
 
     public function addFood($model,$del)
     {
         $cart = $this::find()->where(['user_id'=> Yii::$app->user->id])->one();
-
-
 
         if(!$cart){$cart = new Cart;}
 
@@ -108,16 +106,13 @@ class Cart extends \yii\db\ActiveRecord
 
                         if($cart_food->count == 1){
                             $cart_food->delete();
+                            CartSession::getSession();
                         } else {
                             $cart_food->count = $cart_food->count -1;
                             $cart_food->save();
                         }
-
                     }
-
                 }
-
-
             }
 
     }

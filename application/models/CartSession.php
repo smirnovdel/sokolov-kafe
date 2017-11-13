@@ -23,13 +23,13 @@ class CartSession
             }
 
 
-                            $_SESSION['curt'] = [
+                            $_SESSION['cart'] = [
                                 'sum' => $total,
                                 'count' => $count,
                             ];
         } else {
 
-            $_SESSION['curt'] = [
+            $_SESSION['cart'] = [
             'sum' => 0,
             'count' => 0,
             ];

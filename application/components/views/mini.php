@@ -24,8 +24,8 @@ $this->registerJs(
 <div class="panel panel-default1" >   
 <div class='box'>
         <ul>
-            <li>Сумма: <?=$_SESSION['curt']['sum']?></li>
-            <li>Кол-во: <?=$_SESSION['curt']['count']?></li>
+            <li>Сумма: <?=$_SESSION['cart']['sum']?></li>
+            <li>Кол-во: <?=$_SESSION['cart']['count']?></li>
         </ul>
     </div>
 </div>

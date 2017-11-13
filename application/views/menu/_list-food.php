@@ -16,8 +16,10 @@ use yii\widgets\Pjax;
     <p><?= Html::encode($model->name); ?></p>
     <p>Вес: <?= Html::encode($model->weight); ?></p>
     <p>Цена: <?= Html::encode($model->price); ?></p>
-    <?= Html::a('-', ['index','id'=>$model->id,'del'=>true], ['class' => 'count external-link']) ?>
-      <?= Html::a('+', ['index','id'=>$model->id,], ['class' => 'count external-link']) ?>
+    <?php
+    if(Yii::$app->user->can('update-cart')){
+    echo Html::a('-', ['index','id'=>$model->id,'del'=>true], ['class' => 'count external-link']);
+    echo Html::a('+', ['index','id'=>$model->id,], ['class' => 'count external-link']); }?>
      
     <br />
     <?//= Html::a("Обновить", ['cart/clear'], ['class' => 'btn btn-lg btn-primary']) ?>

@@ -53,24 +53,14 @@ $config = [
             ],
         ],
         'db' => $db,
-        
 
-        
-        
+
+
+
         'cart' => [
             'class' => 'yz\shoppingcart\ShoppingCart',
             'cartId' => 'my_application_cart',
         ],
-        'i18n' => [
-            'translations' => [
-                'file-input*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => dirname(__FILE__).'/../vendor/2amigos/yii2-file-input-widget/src/messages/',
-                ],
-            ],
-        ],
-        
-        
     ],
     
     'params' => $params,

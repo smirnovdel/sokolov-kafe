@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <p>
     <?php 
     
-    if(Yii::$app->user->can('CreateFood')){
+    if(Yii::$app->user->can('create-food')){
        echo Html::a('Create Foodss', ['create'], ['class' => 'btn btn-success']);
                 
     } ?>
