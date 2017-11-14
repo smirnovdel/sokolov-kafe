@@ -14,12 +14,6 @@ class FoodController extends ActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        /* $behaviors['authenticator'] = [
-           'class' => HttpBasicAuth::className(),
-            'auth' => function ($username,$password) {
-                $user = User::find()->where(['username' => $username])->one();
-                return $user;},
-        ];*/
        $behaviors['contentNegotiator'] = [
            'class' => ContentNegotiator::className(),
            'formats' => [

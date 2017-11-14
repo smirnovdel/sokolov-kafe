@@ -30,7 +30,8 @@ use yii\helpers\Url;
             ]);?>
 
             <?php $category = ArrayHelper::map(\app\models\Category::find()->all(), 'id','name') ?>
-            <?= $form->field($model, 'category')->dropDownList($category, ['prompt' => '---- Select price type ----'])->label('price type') ?>
+            <?= $form->field($model, 'category')->dropDownList($category,
+                ['prompt' => '---- Select price type ----', ])->label('price type') ?>
 
             <div class="form-group">
                 <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -1,5 +1,6 @@
 <?php
 namespace app\models;
+use Yii;
 
 use dektrium\user\models\User as BaseUser;
 
@@ -27,4 +28,6 @@ class User extends BaseUser
         CartSession::getSession();
 
     }
+
+
 }

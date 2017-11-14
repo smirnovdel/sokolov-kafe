@@ -2,6 +2,7 @@
 namespace app\modules\v1\controllers;
 use Yii;
 use app\models\Cart;
+
 use yii\rest\ActiveController as Controller;
 use yii\web\Response;
 use yii\filters\ContentNegotiator;
@@ -32,7 +33,7 @@ class CartController extends Controller
                 [
                     'actions' => ['create', 'update', 'delete', 'index'],
                     'allow' => true,
-                    'roles' => ['admin'],
+                    'roles' => ['Super-admin'],
                 ],
                 [
                     'actions' => ['index'],
@@ -42,26 +43,21 @@ class CartController extends Controller
             ],
         ];
 
+
         return $behaviors;
     }
 
-   /* public function actionIndex()
+
+
+    public function checkAccess($action, $model = null, $params = [])
     {
+        if ( Yii::$app->user->id !== $model->user_id)
 
-        return Cart::parser();
+            {
+                throw new \yii\web\ForbiddenHttpException('You can\'t '.$action.' this product.');
+            }
+
     }
-
-    public function actionCreate()
-    {//получить данные из запроса
-        $model = new Cart();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return false;
-        }
-    }*/
 
 
 }

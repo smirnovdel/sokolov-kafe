@@ -19,11 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php 
     
     if(Yii::$app->user->can('create-food')){
-       echo Html::a('Create Foodss', ['create'], ['class' => 'btn btn-success']);
+       echo Html::a('Create Foods', ['create'], ['class' => 'btn btn-success']);
                 
     } ?>
-    </p>    
-    
+    </p>
     <?php
 echo ListView::widget([
     'dataProvider' => $dataProvider,

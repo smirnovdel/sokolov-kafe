@@ -19,11 +19,14 @@ use yii\widgets\Pjax;
     <?php
     if(Yii::$app->user->can('update-cart')){
     echo Html::a('-', ['index','id'=>$model->id,'del'=>true], ['class' => 'count external-link']);
-    echo Html::a('+', ['index','id'=>$model->id,], ['class' => 'count external-link']); }?>
-     
-    <br />
-    <?//= Html::a("Обновить", ['cart/clear'], ['class' => 'btn btn-lg btn-primary']) ?>
- 
+    echo Html::a('+', ['index','id'=>$model->id,], ['class' => 'count external-link']);
+        }?>
+    <?php if(Yii::$app->user->can('delete-food', ['model' => $model])){
+        echo Html::a('Del', ['menu/qwerty', 'id'=>$model->id], ['class' => 'count external-link']);
+
+    } ?>
+
+
 </div>
 </div>
 <?php Pjax::end(); ?>

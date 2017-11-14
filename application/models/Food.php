@@ -1,6 +1,8 @@
 <?php
 
 namespace app\models;
+use yii\behaviors\BlameableBehavior;
+
 
 use Yii;
 /**
@@ -21,6 +23,17 @@ class Food extends \yii\db\ActiveRecord
    public $category;
 
 
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'created_by',
+            ],
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -40,6 +53,7 @@ class Food extends \yii\db\ActiveRecord
             [['category'], 'integer'],
             [['price'], 'number'],
             [['name', 'picture'], 'string', 'max' => 255],
+
         ];
     }
 
@@ -79,7 +93,6 @@ class Food extends \yii\db\ActiveRecord
     return $this->hasMany(Category::className(), ['id' => 'category_id'])
       ->viaTable(FoodCategory::tableName(), ['food_id' => 'id']);
 }
-
 
 
 

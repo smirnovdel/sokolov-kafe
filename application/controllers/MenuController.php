@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+
 use Yii;
-use app\models\Cart;
 use app\models\Category;
+use app\models\Cart;
+use app\models\CartFood;
 use app\models\FoodCategory;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -13,7 +15,6 @@ use yii\filters\VerbFilter;
 use app\models\Food;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
-use yii\web\ForbiddenHttpException;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -26,6 +27,7 @@ class MenuController extends Controller
      */
     public function behaviors()
     {   $behaviors = parent::behaviors();
+
         $behaviors['access'] = [
             'class' => AccessControl::className(),
            'only' => ['create', 'update', 'delete', 'index'],
@@ -33,10 +35,10 @@ class MenuController extends Controller
                [
                    'actions' => ['create', 'update', 'delete', 'index'],
                    'allow' => true,
-                   'roles' => ['Super-admin'],
+                   'roles' => ['Super-admin','Administrator'],
                ],
                [
-                   'actions' => ['index'],
+                   'actions' => ['delete','index'],
                    'allow' => true,
                    'roles' => ['@','?'],
                ],
@@ -160,8 +162,26 @@ class MenuController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        return $this->redirect(['menu/index']);
+    }
 
-        return $this->redirect(['index']);
+
+
+
+    public function actionQwerty($id)
+    {
+        if(!CartFood::find()->where(['food_id'=>$id])){
+
+            FoodCategory::deleteAll([
+                'food_id' => $id,
+            ]);
+            $this->findModel($id)->delete();
+
+            return $this->redirect(['menu/index']);
+        } else {
+
+            return $this->redirect(['menu/index']);
+        }
     }
 
     /**
@@ -173,12 +193,12 @@ class MenuController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Menu::findOne($id)) !== null) {
+        if (($model = Food::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 
-    
+
 }

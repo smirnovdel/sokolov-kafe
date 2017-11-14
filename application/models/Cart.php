@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+
 use yii\db\ActiveRecord;
 use yii\helpers\BaseJson;
 use app\models\CartFood;
@@ -15,7 +16,6 @@ use Yii;
  *
  * @property CartFood[] $cartFoods
  */
-
 class Cart extends \yii\db\ActiveRecord
 {
     /**
@@ -45,9 +45,15 @@ class Cart extends \yii\db\ActiveRecord
         return [
 
             'user_id' => 'User Id',
-            'json_order' => 'Json Order',
+
         ];
     }
+
+    public function extraFields()
+    {
+        return ['cartFoods'];
+    }
+
 
     /**
      * @inheritdoc
@@ -56,8 +62,8 @@ class Cart extends \yii\db\ActiveRecord
     public static function find()
     {
         return new CartQuery(get_called_class());
-    }
 
+    }
 
 
     public function afterSave($insert, $changedAttributes)
@@ -68,52 +74,55 @@ class Cart extends \yii\db\ActiveRecord
 
     }
 
-    public function addFood($model,$del)
+    public function addFood($model, $del)
     {
-        $cart = $this::find()->where(['user_id'=> Yii::$app->user->id])->one();
+        $cart = $this::find()->where(['user_id' => Yii::$app->user->id])->one();
 
-        if(!$cart){$cart = new Cart;}
+        if (!$cart) {
+            $cart = new Cart;
+        }
 
-            $cart->user_id = Yii::$app->user->id;
+        $cart->user_id = Yii::$app->user->id;
 
-            if($cart->save()){
+        if ($cart->save()) {
 
-                $cart_food = CartFood::find()->where(['cart_id'=>$cart->id,'food_id'=>$model->id])->one();
+            $cart_food = CartFood::find()->where(['cart_id' => $cart->id, 'food_id' => $model->id])->one();
 
-                if(!$del){
+            if (!$del) {
 
-                    if(!$cart_food){
+                if (!$cart_food) {
 
-                        $cart_food = new \app\models\CartFood;
-                        $cart_food->count = 1;
-
-                    } else {
-
-                        $cart_food->count = $cart_food->count + 1;
-                    }
-
-                    $cart_food->cart_id = $cart->id;
-                    $cart_food->food_id = $model->id;
-
-                    if($cart_food->save()){
-
-                    } else{
-                       print_r($cart_food->getErrors());};
+                    $cart_food = new \app\models\CartFood;
+                    $cart_food->count = 1;
 
                 } else {
 
-                    if($cart_food){
+                    $cart_food->count = $cart_food->count + 1;
+                }
 
-                        if($cart_food->count == 1){
-                            $cart_food->delete();
-                            CartSession::getSession();
-                        } else {
-                            $cart_food->count = $cart_food->count -1;
-                            $cart_food->save();
-                        }
+                $cart_food->cart_id = $cart->id;
+                $cart_food->food_id = $model->id;
+
+                if ($cart_food->save()) {
+
+                } else {
+                    print_r($cart_food->getErrors());
+                };
+
+            } else {
+
+                if ($cart_food) {
+
+                    if ($cart_food->count == 1) {
+                        $cart_food->delete();
+                        CartSession::getSession();
+                    } else {
+                        $cart_food->count = $cart_food->count - 1;
+                        $cart_food->save();
                     }
                 }
             }
+        }
 
     }
 
@@ -122,7 +131,6 @@ class Cart extends \yii\db\ActiveRecord
      */
     public function getCartFoods()
     {
-
 
 
         return $this->hasMany(CartFood::className(), ['cart_id' => 'id']);

@@ -76,14 +76,14 @@ $config = [
         'cost' => 12,
         'admins' => ['admin'],
         'layout'=>'/default',
-        'on '.\yii\web\User::EVENT_AFTER_LOGOUT => ['app\models\User', 'afterLogin'],
+        'on '.\yii\web\User::EVENT_AFTER_LOGIN => ['app\models\User', 'afterLogin'],
         'modelMap' => [
             'User' => 'app\models\User',
         ],
         ],
      'authManager' => [
             'class' => 'dektrium\rbac\RbacWebModule',
-            'defaultRoles' => ['admin', 'waiter'],
+            'defaultRoles' => ['User'],
              ],
         'v1' => [
             'class' => 'app\modules\v1\Module',
