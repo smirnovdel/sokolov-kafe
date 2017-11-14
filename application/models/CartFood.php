@@ -48,7 +48,19 @@ class CartFood extends \yii\db\ActiveRecord
         ];
     }
 
-
+  /*  public function extraFields()
+    {
+        return ['food'];
+    }
+*/
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields['food'] = function (){
+            return $this->food;
+        };
+    return $fields;
+    }
 
     public function afterSave($insert, $changedAttributes)
     {

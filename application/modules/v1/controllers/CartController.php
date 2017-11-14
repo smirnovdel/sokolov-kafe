@@ -2,7 +2,7 @@
 namespace app\modules\v1\controllers;
 use Yii;
 use app\models\Cart;
-
+use yii\data\ActiveDataProvider;
 use yii\rest\ActiveController as Controller;
 use yii\web\Response;
 use yii\filters\ContentNegotiator;
@@ -38,7 +38,7 @@ class CartController extends Controller
                 [
                     'actions' => ['index'],
                     'allow' => true,
-                    'roles' => ['user'],
+                    'roles' => ['@'],
                 ],
             ],
         ];
@@ -47,11 +47,26 @@ class CartController extends Controller
         return $behaviors;
     }
 
-
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index'] = [
+            'class' => 'yii\rest\IndexAction',
+            'modelClass' => $this->modelClass,
+            'checkAccess' => [$this, 'checkAccess'],
+            'prepareDataProvider' => function () {
+                return new ActiveDataProvider([
+                    'query' => Cart::find()->where(['user_id' => Yii::$app->user->id])
+                    // 'query' => Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->with('food')
+                ]);
+            }
+        ];
+    return $actions;
+}
 
     public function checkAccess($action, $model = null, $params = [])
     {
-        if ( Yii::$app->user->id !== $model->user_id)
+        if ( Yii::$app->user->id == $model->user_id)
 
             {
                 throw new \yii\web\ForbiddenHttpException('You can\'t '.$action.' this product.');
