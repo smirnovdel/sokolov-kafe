@@ -16,6 +16,7 @@ $this->registerJs(
     container : '#mini',
   });		
 });
+
         ",
     $this::POS_READY,
     'site-mini-cart'

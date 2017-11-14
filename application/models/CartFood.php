@@ -66,7 +66,6 @@ class CartFood extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        CartSession::getSession();
 
 
     }

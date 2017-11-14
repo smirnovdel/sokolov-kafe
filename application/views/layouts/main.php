@@ -35,16 +35,6 @@ AppAsset::register($this);
     <div class="brand">La Bottega Siciliana</div>
     <div class="address-bar">Autostrada A19 Palermo-Catania | Uscita Dittaino Outlet - 94011 Agira</div>
    
- <?php
- //unset($_SESSION['curt']);
- //unset($_SESSION['login_id']);
- 
-
- //app\models\CartSession::getSession();
-
- 
-?>
- 
 
     <?php
     NavBar::begin([

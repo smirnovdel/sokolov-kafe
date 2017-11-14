@@ -18,6 +18,15 @@ use Yii;
  */
 class Cart extends \yii\db\ActiveRecord
 {
+    /** @var $session CartSession  */
+    public $session = null;
+
+    public function __construct(array $config = [])
+    {
+        parent::__construct($config);
+        $this->session = CartSession::getSession();
+    }
+
     /**
      * @inheritdoc
      */
@@ -105,6 +114,8 @@ class Cart extends \yii\db\ActiveRecord
 
                 if ($cart_food->save()) {
 
+                    CartSession::addSession($model->price);
+
                 } else {
                     print_r($cart_food->getErrors());
                 };
@@ -114,11 +125,15 @@ class Cart extends \yii\db\ActiveRecord
                 if ($cart_food) {
 
                     if ($cart_food->count == 1) {
-                        $cart_food->delete();
-                        CartSession::getSession();
+                        if($cart_food->delete()){
+                            CartSession::deleteSession($model->price);
+                        }
+
                     } else {
                         $cart_food->count = $cart_food->count - 1;
-                        $cart_food->save();
+                        if($cart_food->save()){
+                            CartSession::deleteSession($model->price);
+                        };
                     }
                 }
             }

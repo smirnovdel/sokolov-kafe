@@ -76,10 +76,20 @@ $config = [
         'cost' => 12,
         'admins' => ['admin'],
         'layout'=>'/default',
-        'on '.\yii\web\User::EVENT_AFTER_LOGIN => ['app\models\User', 'afterLogin'],
+        //'on afterLogin' => ['app\models\CartSession', 'getSession'],
+        'controllerMap' => [
+            'security' => [
+                'class' => \dektrium\user\controllers\SecurityController::className(),
+                'on ' . \dektrium\user\controllers\SecurityController::EVENT_AFTER_LOGIN => function ($e) {
+                    app\models\CartSession::initSession();
+                },
+            ]
+        ],
+
         'modelMap' => [
             'User' => 'app\models\User',
         ],
+
         ],
      'authManager' => [
             'class' => 'dektrium\rbac\RbacWebModule',
