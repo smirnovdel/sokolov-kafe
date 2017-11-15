@@ -31,6 +31,7 @@ class CartController extends Controller
             ],
         ];
     }
+
     /**
      * Lists all Cart models.
      * @return mixed
@@ -38,32 +39,35 @@ class CartController extends Controller
     public function actionIndex()
     {
         $user = Yii::$app->user->getIdentity();
-        if($user){
+        if ($user) {
             $cart = $user->getCart();
 
-            if($cart){
-                $user_cart =  $cart->one();
-                if($user_cart){
-                  $query = $user_cart->getCartFoods()->with('food');
+            if ($cart) {
+                $user_cart = $cart->one();
+                if ($user_cart) {
+                    $query = $user_cart->getCartFoods()->with('food');
                 }
             }
 
         }
 
-      $dataProvider = new ActiveDataProvider([
+        $dataProvider = new ActiveDataProvider([
 
             'query' => $query,
             'pagination' => false]);
 
+        if($query){
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-        ]);
+        ]);} else {
+            $this->redirect('site/index');
+        }
 
-     //var_dump(Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->all());
+        //var_dump(Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->all());
     }
 
 
-    
     /**
      * Displays a single Cart model.
      * @param integer $id
@@ -71,7 +75,7 @@ class CartController extends Controller
      */
     public function actionView($id)
     {
-         return $this->render('view', [
+        return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -119,40 +123,38 @@ class CartController extends Controller
      */
     protected function findModel($id)
     {
-      if (($model = Menu::findOne($id)) !== null) {
+        if (($model = Menu::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
-  
+
+
     public function actionAddToCart($id, $del = false)
     {
         $model = \app\models\Food::findOne($id);
 
         $cart = new Cart;
 
-        $cart->addFood($model,$del);
+        $cart->addFood($model, $del);
         $dataProvider = new ActiveDataProvider([
             'query' => Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->with('food'),
             'pagination' => false]);
-
 
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
-    
-        
-    
+
+
     public function actionСleart()
     {
 
         return $this->redirect(['menu/index']);
-          
+
     }
-    
-    
+
+
 }

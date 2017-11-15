@@ -21,33 +21,15 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <div class="menu-index">
-   
-    <div class="row text-center">
-  <div class="box">
- <?php
 
- Pjax::begin(['id' => 'cart','enablePushState' => false]);
- echo ListView::widget([
+        <div class="row text-center">
+            <div class="box">
+               <p>Добавьте товар в корзину</p>
+            </div>
+        </div>
 
-     'dataProvider' => $dataProvider,
 
-     'options' => [
-         'tag' => 'div',
-         'class' => 'list-wrapper',
-         'id' => 'list-wrapper',
 
-     ],
-     'layout' => "{items}\n{pager}",
-     'itemView' => '_list',
- ]);
-
-Pjax::end();
-?>
-</div>
-</div>
-        
-        
-        
-</div>
+    </div>
 
 </div>
