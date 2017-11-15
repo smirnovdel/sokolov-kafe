@@ -15,7 +15,6 @@ use yii\filters\VerbFilter;
 /**
  * CartController implements the CRUD actions for Cart model.
  */
-$session = Yii::$app->session;
 class CartController extends Controller
 {
     /**
@@ -38,9 +37,22 @@ class CartController extends Controller
      */
     public function actionIndex()
     {
+        $user = Yii::$app->user->getIdentity();
+        if($user){
+            $cart = $user->getCart();
+
+            if($cart){
+                $user_cart =  $cart->one();
+                if($user_cart){
+                  $query = $user_cart->getCartFoods()->with('food');
+                }
+            }
+
+        }
 
       $dataProvider = new ActiveDataProvider([
-            'query' => Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->with('food'),
+
+            'query' => $query,
             'pagination' => false]);
 
         return $this->render('index', [

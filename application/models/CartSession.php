@@ -40,10 +40,21 @@ class CartSession
 
     public static function initSession()
     {
+        $user = Yii::$app->user->getIdentity();
+        if($user){
+            $cart = $user->getCart();
 
-        $order = Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->with('food');
+            if($cart){
+                $user_cart =  $cart->one();
+                if($user_cart){
+                    $order = $user_cart->getCartFoods()->with('food');
+                }
+            }
 
-        if ($order->one()) {
+        }
+        //$order = Yii::$app->user->getIdentity()->getCart()->one()->getCartFoods()->with('food');
+
+        if ($order) {
 
             $total = 0;
             $count = 0;

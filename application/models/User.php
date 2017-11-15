@@ -19,6 +19,20 @@ class User extends BaseUser
 
     public function getCart()
     {
+        /*$model = $this->hasOne(Cart::className(), ['user_id' => 'id']);
+
+        if ($model->user_id !== null) {
+            return $model;
+        } else {
+            $cart = new Cart();
+            $cart->user_id = Yii::$app->user->id;
+            if($cart->save()){
+
+               $this->getCart();
+            }
+
+        }*/
+
         return $this->hasOne(Cart::className(), ['user_id' => 'id']);
     }
 

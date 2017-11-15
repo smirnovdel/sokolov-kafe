@@ -170,7 +170,10 @@ class MenuController extends Controller
 
     public function actionQwerty($id)
     {
-        if(!CartFood::find()->where(['food_id'=>$id])){
+        $obj = CartFood::find()->where(['food_id'=>$id]);
+        if($obj->one()->id){
+            return $this->redirect(['menu/index']);
+        } else {
 
             FoodCategory::deleteAll([
                 'food_id' => $id,
@@ -178,9 +181,7 @@ class MenuController extends Controller
             $this->findModel($id)->delete();
 
             return $this->redirect(['menu/index']);
-        } else {
 
-            return $this->redirect(['menu/index']);
         }
     }
 
